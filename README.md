@@ -31,14 +31,15 @@
 
 模型公式：
 
-```math
-y(x) = w_{0} + \sum_{i=1}^nw_{i}x_{i}+\frac{1}{2} \sum_{f=1}^k((\sum_{i=1}^nv_{i,f}x_{i})^2-\sum_{i=1}^nv_{i,f}^2x_{i}^2)
-```
+$$y(x) = w_{0} + \sum_{i=1}^nw_{i}x_{i}+\frac{1}{2} \sum_{f=1}^k((\sum_{i=1}^nv_{i,f}x_{i})^2-\sum_{i=1}^nv_{i,f}^2x_{i}^2)$$
+
 具体的公式理解可以阅读上面推荐的博客
 
 ### DeepFM模型
 
 DeepFM模型主要是讲FM模型与DNN(Deep Neural Network)进行结合，一般结合方式是串行和并行，该模型采取的方式是并行。
+DeepFM模型结构如图所示：
+![DeepFM](./img/deepfm.png)
 
 [模型理解和代码解读参考](!https://www.cnblogs.com/wkang/p/9881921.html)
 
@@ -66,9 +67,12 @@ DeepFM模型主要是讲FM模型与DNN(Deep Neural Network)进行结合，一般
 ### xDeepFM模型
 
 在我看来xDeepFM模型与FM模型并没有什么关系，从论文的网络结构图中看出，网络的输出层的输入是由Linear、CIN网络输出和DNN网络输出构成，Linear部分和DNN的操作和DeepFM相同，而CIN网络主要是为了组合特征，学习Cross Network的思想，进行设计。
-
+xDeepFM模型结构如图所示：
+![xDeepFM](./img/xdeepfm.png)
 CIN网络的部分看论文的网络结构比较复杂，直接看的DeepCTR的源码，然后翻译成mxnet写的，自己写的模型性能和准确度上面可能不如源码的，在一个epoch，服务器上源码跑几分钟到十几分钟，自己的模型大概需要20-40分钟。
 
+CIN网络结构如图所示：
+![CIN](./img/cin.png)
 重点说下CIN网络的设计思路，其他方面同DeepFM模型：
 
 
