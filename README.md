@@ -25,13 +25,13 @@
 
 > 但是该模型的隐向量部分并未在本次比赛的mxnet版本代码中实现，主要原因是将数据one-hot处理之后，在通过数据index转换参数矩阵进行求解过程中，因为有一些操作导致模型网络在构建过程中网络断掉，mxnet的自动求导失效，从而导致模型未更新.
 
-推荐阅读博客[FM算法解读](!http://www.cnblogs.com/wkang/p/9588360.html)
-关于如何处理隐向量问题也可以参考博客[隐向量](!https://www.cnblogs.com/wkang/p/9881921.html)
+推荐阅读博客[FM算法解读](http://www.cnblogs.com/wkang/p/9588360.html)
+关于如何处理隐向量问题也可以参考博客[隐向量](https://www.cnblogs.com/wkang/p/9881921.html)
 
 
 模型公式：
 
-$$y(x) = w_{0} + \sum_{i=1}^nw_{i}x_{i}+\frac{1}{2} \sum_{f=1}^k((\sum_{i=1}^nv_{i,f}x_{i})^2-\sum_{i=1}^nv_{i,f}^2x_{i}^2)$$
+<math>y(x) = w_{0} + \sum_{i=1}^nw_{i}x_{i}+\frac{1}{2} \sum_{f=1}^k((\sum_{i=1}^nv_{i,f}x_{i})^2-\sum_{i=1}^nv_{i,f}^2x_{i}^2)</math>
 
 具体的公式理解可以阅读上面推荐的博客
 
@@ -42,9 +42,9 @@ DeepFM模型结构如图所示：
 
 ![DeepFM](./img/deepfm.png)
 
-[模型理解和代码解读参考](!https://www.cnblogs.com/wkang/p/9881921.html)
+[模型理解和代码解读参考](https://www.cnblogs.com/wkang/p/9881921.html)
 
-[代码主要参考](!https://github.com/shenweichen/DeepCTR)
+[代码主要参考](https://github.com/shenweichen/DeepCTR)
 
 #### 模型结构图解读：
 
@@ -81,7 +81,7 @@ CIN网络结构如图所示：
 重点说下CIN网络的设计思路，其他方面同DeepFM模型：
 
 
-大体的思路是对于每一个样本的每一个embedding维度的向量进行 $$\otimes$$ 运算，比如,x1是由 x0做 $$\otimes$$ 运算得到的，x0的第一个样本的第一个embedding向量（fieldnum,1）和x0的第一个样本的第一个embedding向量的转置（1，fieldnum）做运算(4-a)，得到一个（fieldnum,fieldnum）维度的矩阵，最后得到的矩阵维度是(embeddingsize,batchsize,fieldnum,fieldnum),经过reshape和transpose之后得到(batchsize,fieldnum$$*$$fieldnum,embeddingsize)维度的向量，输入到conv1d中（4-b）进行卷积运算，通道是fieldnum*fieldnum，kernel是1，最后输出的矩阵大小为（batchsize,layersize,embeddingsize）即为x1,同样地，x1和x0进行同样的运算得到x2,将这些x进行concat（4-c）,再经过dense输出。
+大体的思路是对于每一个样本的每一个embedding维度的向量进行 <math>\otimes</math> 运算，比如,x1是由 x0做 <math>\otimes</math> 运算得到的，x0的第一个样本的第一个embedding向量（fieldnum,1）和x0的第一个样本的第一个embedding向量的转置（1，fieldnum）做运算(4-a)，得到一个（fieldnum,fieldnum）维度的矩阵，最后得到的矩阵维度是(embeddingsize,batchsize,fieldnum,fieldnum),经过reshape和transpose之后得到(batchsize,fieldnum$$*$$fieldnum,embeddingsize)维度的向量，输入到conv1d中（4-b）进行卷积运算，通道是fieldnum*fieldnum，kernel是1，最后输出的矩阵大小为（batchsize,layersize,embeddingsize）即为x1,同样地，x1和x0进行同样的运算得到x2,将这些x进行concat（4-c）,再经过dense输出。
 
 将embedding部分，dnn部分和cin网络部分的数据相加，经过sigmoid映射到0-1之间作为预测概率作为模型的输出。
 
